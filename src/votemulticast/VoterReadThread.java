@@ -1,6 +1,6 @@
 package votemulticast;
 
-import distributedvote.Vote;
+import distributedvote.Message;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -25,11 +25,11 @@ class VoterReadThread implements Runnable {
     private static int timeout;
 
     int label;
-    private final Vote vote;
-    private final ArrayList<Vote> list = new ArrayList<>();
+    private final Message vote;
+    private final ArrayList<Message> list = new ArrayList<>();
     private final ArrayList<Integer> voted = new ArrayList<>();
 
-    public VoterReadThread(InetAddress g, int p, int l, Vote v, int t) {
+    public VoterReadThread(InetAddress g, int p, int l, Message v, int t) {
         group = g;
         port = p;
         timeout = t;
@@ -56,7 +56,7 @@ class VoterReadThread implements Runnable {
 
                 //process the vote
                 byte[] incomingBytes = packet.getData();
-                Vote incomingVote = Vote.deserialize(incomingBytes);
+                Message incomingVote = Message.deserialize(incomingBytes);
                 if (VERBOSE) {
                     System.out.print("#" + label + " rec: " + " " + incomingVote + "\t");
                 }
@@ -121,8 +121,8 @@ class VoterReadThread implements Runnable {
             if (VERBOSE) {
                 System.out.print("[" + s + "] ");
             }
-            if (s.getClass() == Vote.class) {
-                Vote v = (Vote) s;
+            if (s.getClass() == Message.class) {
+                Message v = (Message) s;
                 if (v.getVote().equals("1")) {
                     choice1++;
                 } else if (v.getVote().equals("2")) {

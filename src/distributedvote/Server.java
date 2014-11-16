@@ -73,7 +73,16 @@ public class Server {
                 System.out.println(e.getMessage());
             }
             System.out.println(messageIn);
+            String reply = processMessage(messageIn);
         }
 
+    }
+    
+    public String processMessage(String in ){
+//        if(){
+//            
+//        }
+        
+        return "reply";
     }
 }

@@ -8,6 +8,7 @@ package distributedvote;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
+import java.net.DatagramPacket;
 
 /**
  *
@@ -42,12 +43,20 @@ public class Client {
 
         try {
             MySocket socket = new MySocket(hostName, port);//create connection socket
+            Message loginMessage = new Message("command", -1, "password");
+            byte[] data = loginMessage.serialize();
+            //DatagramPacket packet = new DatagramPacket(data, data.length, group, port);
+            socket.sendMessage(data);
+            //String reply = socket.recieveMessage();
+            String reply=null;
+            System.out.println(reply);
 
             while (true) {
+
                 System.out.print("Enter command: ");
                 String message = getInput();
                 socket.sendMessage(message);
-                
+
                 //socket.sendMessage("You sent me:\t" + message);//send a reply
             }
         } catch (IOException e) {

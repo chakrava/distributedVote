@@ -5,6 +5,7 @@
  */
 package distributedvote;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStream;
@@ -28,6 +29,7 @@ public class MySocket {
     private Socket socket;//a socket to initiate a connection
     private ServerSocket serverSocket;//a socket to receive connection
     private BufferedReader input;
+    private BufferedInputStream inputByte;
     private PrintWriter output;
 
     private final int TIMEOUT = 0;//10000;//timeout after 10 seconds
@@ -62,6 +64,10 @@ public class MySocket {
 
         InputStream inStream = socket.getInputStream();
         input = new BufferedReader(new InputStreamReader(inStream));
+        
+        //InputStream inStreamByte = socket.getInputStream();
+        inputByte=new BufferedInputStream(inStream);
+        
         OutputStream outStream = socket.getOutputStream();
         output = new PrintWriter(new OutputStreamWriter(outStream));
 
@@ -73,9 +79,21 @@ public class MySocket {
         output.flush();
     }
 
+    public void sendMessage(byte[] message) {
+        output.println(message);
+        output.flush();
+    }
+
     //receive a message
-    public String recieveMessage() throws IOException {
-        String message = input.readLine();
-        return message;
+    public Message recieveMessage() throws IOException {
+        //byte[] incomingBytes = socket.getInputStream();
+        //byte[] incomingBytes = packet.getData();
+        //Message incomingVote = Message.deserialize(incomingBytes);
+
+        InputStream incStream = socket.getInputStream();
+        //Message message = Message.deserialize(incStream);
+        
+        //return message;
+        return null;
     }
 }

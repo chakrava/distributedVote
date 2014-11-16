@@ -1,6 +1,6 @@
 package votemulticast;
 
-import distributedvote.Vote;
+import distributedvote.Message;
 import java.io.IOException;
 import java.net.DatagramPacket;
 import java.net.InetAddress;
@@ -22,7 +22,7 @@ public class Voter {
     static int port;
     static int timeout;
     static String message;
-    static Vote vote;
+    static Message vote;
     static byte[] data;
 
     static String listenAddress;// = "224.0.0.1";
@@ -39,7 +39,7 @@ public class Voter {
         port = toInt(incArgs[2]);
         message = (incArgs[3]);
         timeout = toInt(incArgs[4]);
-        vote = new Vote("", label, message);
+        vote = new Message("", label, message);
 
         //turn the vote into data that can be sent over Datagram
         try {

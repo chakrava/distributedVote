@@ -6,6 +6,7 @@ import java.io.IOException;
 import java.io.ObjectInputStream;
 import java.io.ObjectOutputStream;
 import java.io.Serializable;
+import java.util.ArrayList;
 
 /**
  *
@@ -15,16 +16,18 @@ import java.io.Serializable;
  *
  * contains the vote itself and a label, an unique identifier for a voter
  */
-public class Vote implements Serializable {
+public class Message implements Serializable {
 
     String vote;
     int identifier;
     String command;
+    ArrayList<String> votes;
 
-    public Vote(String c, int l, String s) {
+    public Message(String c, int l, String s) {
+        command = c;
         vote = s;
         identifier = l;
-        command = c;
+        votes = new ArrayList<>();
     }
 
     //turn a vote into a byte[]
@@ -36,11 +39,11 @@ public class Vote implements Serializable {
     }
 
     //turn a byte[] back into a Vote
-    public synchronized static Vote deserialize(byte[] d) throws IOException, ClassNotFoundException {
+    public synchronized static Message deserialize(byte[] d) throws IOException, ClassNotFoundException {
         ByteArrayInputStream in = new ByteArrayInputStream(d);
         ObjectInputStream is = new ObjectInputStream(in);
         is.close();
-        return (Vote) is.readObject();
+        return (Message) is.readObject();
     }
 
     public String toString() {
