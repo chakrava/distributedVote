@@ -23,6 +23,7 @@ public class Server {
     static int connectionCount = 1;
 
     public static void main(String[] args) {
+        System.out.println("Server starting up...");
         Server myServer = new Server(port);
         myServer.server();
     }
@@ -62,17 +63,8 @@ public class Server {
 
         @Override
         public void run() {
-            socket.sendMessage("You are connection #" + connectionNum);//tell the client which number it is
-
-            int waitTime = (int) (Math.random() * 10);//really sloppy way of rand(0,10), simulates I/O operation time
-            System.out.println("#" + connectionNum + ": waiting for " + waitTime + " seconds...");
-            try {
-                Thread.sleep(waitTime * 1000);//wait for X seconds, keeps connection active
-            } catch (InterruptedException e) {
-                System.out.println(e.getMessage());
-            }
-
-            socket.sendMessage(connectionNum + ": message from server");//send message to client
+            System.out.println("Theread running");
+            //socket.sendMessage("You are connection #" + connectionNum);//tell the client which number it is
 
             String messageIn = "#" + connectionNum + ": ";
             try {

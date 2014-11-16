@@ -30,7 +30,7 @@ public class MySocket {
     private BufferedReader input;
     private PrintWriter output;
 
-    private final int TIMEOUT = 10000;//timeout after 10 seconds
+    private final int TIMEOUT = 0;//10000;//timeout after 10 seconds
 
     //if given a host and port MySocket creates a socket that initiates a connection to the given host on the given port
     MySocket(String host, int port) throws IOException {

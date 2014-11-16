@@ -39,7 +39,7 @@ public class Voter {
         port = toInt(incArgs[2]);
         message = (incArgs[3]);
         timeout = toInt(incArgs[4]);
-        vote = new Vote(label, message);
+        vote = new Vote("", label, message);
 
         //turn the vote into data that can be sent over Datagram
         try {

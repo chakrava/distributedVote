@@ -5,7 +5,9 @@
  */
 package distributedvote;
 
+import java.io.BufferedReader;
 import java.io.IOException;
+import java.io.InputStreamReader;
 
 /**
  *
@@ -24,6 +26,7 @@ public class Client {
     static int defaultPort = 60000;
 
     public static void main(String[] args) {
+        System.out.println("Client starting up...");
         int port = defaultPort;
         Client myClient = new Client("localhost", port);
         myClient.client();
@@ -40,19 +43,22 @@ public class Client {
         try {
             MySocket socket = new MySocket(hostName, port);//create connection socket
 
-            String message = "";
-
-            message = socket.recieveMessage();//recieve an initial message
-            System.out.println("\t"+message);
-
-            message = socket.recieveMessage();//recieve a follow-up message
-            System.out.println("\t"+message);
-
-            socket.sendMessage("You sent me:\t" + message);//send a reply
-
+            while (true) {
+                System.out.print("Enter command: ");
+                String message = getInput();
+                socket.sendMessage(message);
+                
+                //socket.sendMessage("You sent me:\t" + message);//send a reply
+            }
         } catch (IOException e) {
             System.out.println(e.getMessage());
         }
         //System.out.println("done");
+    }
+
+    private String getInput() throws IOException {
+        BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
+        String temp = br.readLine();
+        return temp;
     }
 }
