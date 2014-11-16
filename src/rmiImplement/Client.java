@@ -14,7 +14,8 @@ public class Client {
     public static void main(String[] args) {
         try {
             VoteInterface vote = (VoteInterface)Naming.lookup("//localhost:60000/vote");
-            System.out.println(vote.test());
+            //vote.login("pass");
+            System.out.println("ID: "+vote.login("pass"));
         } catch (Exception e) {
             System.out.println(e);
         }

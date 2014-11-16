@@ -16,16 +16,12 @@ public class Server {
     public static void main(String[] args) {
         System.out.println("Server starting up...");
         try {
-            //java.rmi.server.hostname = "127.0.0.1";
+            LocateRegistry.createRegistry(60000);
             Registry registry = LocateRegistry.getRegistry("localhost", 60000);
-            //Naming.rebind("vote", new Vote());
-            registry.bind("vote", new Vote());
+            registry.bind("vote", new Message());
         } catch (Exception e) {
             System.out.println(e);
         }
-
-        //while (true) {
-        //}
     }
 
 }
