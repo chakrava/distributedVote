@@ -11,28 +11,48 @@ import java.util.ArrayList;
 public class Message extends UnicastRemoteObject implements VoteInterface {
 
     static int count = 1;
-//    String message;
-    private ArrayList<Voter> voterList;
-    ArrayList<Choice> choices;
+    static String question = "";
+    private static ArrayList<Voter> voterList;
+    private static ArrayList<Choice> choices;
 
     @Override
-    public String printMenu() {
+    public String printMenu(Voter v) {
         String temp = "";
-        temp += "1: View current voting\n";
-        temp += "2: View current choices\n";
-        temp += "3: Add a new choice\n";
-        temp += "4: Select a choice\n";
+        temp += question + "\n\n";
+        if (checkKey(v)) {
+            if (v.id == 1 && question.isEmpty()) {
+                temp += "Q: Set the question\n";
+            } else {
+                temp += "1: Add a new choice\n";
+                temp += "2: View current choices\n";
+                temp += "3: Select a choice\n";
+                temp += "4: Rescind your vote\n";
+                temp += "5: View current voting results\n";
+            }
 
-        temp += "0: Exit\n";
-        temp += "Please make a selection: ";
-
+            temp += "0: Exit\n";
+            temp += "Please make a selection: ";
+        }
         return temp;
     }
 
     public Message() throws RemoteException {
-//        message = "test";
         choices = new ArrayList<>();
         voterList = new ArrayList<>();
+    }
+
+    @Override
+    public String setQuestion(Voter v, String question) {
+        if (!checkKey(v)) {
+            return "Invalid credentials!";
+        } else if (v.id != 1) {
+            return "You cannot set the question!";
+        } else if (question.length()!=0) {
+            return "The question has already been set!";
+        } else {
+            Message.question = question;
+            return "Question set to \"" + question + "\"";
+        }
     }
 
     private boolean checkKey(Voter checkVoter) {
@@ -64,6 +84,9 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
         }
     }
 
+    /**
+     * @deprecated
+     */
     @Override
     public String test(Voter v) throws RemoteException {
 //        if (checkKey(v)) {
@@ -73,19 +96,26 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
     }
 
     @Override
-    synchronized public boolean vote(Voter v, int i) {
+    synchronized public String vote(Voter v, int choiceInt) {
+        if (checkKey(v) && choices.size() > choiceInt) {
+            for (Choice c : choices) {
+                c.getVotedBy().remove(v);
+            }
+            choices.get(choiceInt).voteFor(v);
+            return "Vote for " + choices.get(choiceInt).getName() + " logged";
+        }
+        return "Vote not recorded";
+    }
+
+    synchronized public String unVote(Voter v) {
         if (checkKey(v)) {
             for (Choice c : choices) {
-                System.out.println("Choice "+c.getName()+" containing "+c.votedBy);
-                c.votedBy.remove(v);
-            }
-
-            if (choices.size() > i) {
-                choices.get(i).voteFor(v);
-                return true;
+                if (c.getVotedBy().remove(v)) {
+                    return "Your vote has been rescinded";
+                }
             }
         }
-        return false;
+        return "Vote not rescinded";
     }
 
     @Override
@@ -120,28 +150,19 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
     }
 
     @Override
-    synchronized public boolean vote(Voter v, Choice c) throws RemoteException {
-        if (checkKey(v)) {
-            return c.voteFor(v);
-        } else {
-            return false;
-        }
-    }
-
-    @Override
-    public boolean addChoice(Voter v, String choiceName) throws RemoteException {
+    public String addChoice(Voter v, String choiceName) throws RemoteException {
         if (checkKey(v)) {
             for (Choice c : choices) {
                 if (c.getName().equals(choiceName)) {
-                    return false;
+                    return "Choice \"" + choiceName + "\" already exists";
                 }
             }
 
             //Choice choice = new Choice(choiceName);
             choices.add(new Choice(choiceName));
-            return true;
+            return "Choice \"" + choiceName + "\" added";
         } else {
-            return false;
+            return "Choice not added";
         }
     }
 }

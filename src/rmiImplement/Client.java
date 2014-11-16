@@ -24,45 +24,51 @@ public class Client {
                 System.exit(0);
             }
             System.out.println("ID: " + me.id);
-            System.out.println("Pass: " + me.key);
+            System.out.println("Key: " + me.key);
             String input = " ";
 
-            ArrayList<Choice> choices;
-
             while (!input.equals("0")) {
-                System.out.print(vote.printMenu());
+                System.out.print(vote.printMenu(me));
                 input = getUserInput();
+                System.out.println();
 
-                switch (input) {
-                    case "1":
+                switch (input.toLowerCase()) {
+                    case "q":
+                        if (me.id == 1) {
+                            System.out.print("Please enter the quesiton you wish to set: ");
+                            System.out.println(vote.setQuestion(me, getUserInput()));
+                        }
+                        break;
+
+                    case "5":
                         System.out.println(vote.getVotes(me));
                         break;
                     case "2":
                         System.out.println(vote.getChoices(me));
                         break;
-                    case "3":
+                    case "1":
                         System.out.print("Please enter the choice you wish to add: ");
                         input = getUserInput();
-                        if (!vote.addChoice(me, input)) {
-                            System.out.println("Error, choice not added");
-                        }
+                        System.out.println(vote.addChoice(me, input));
                         input = " ";
                         break;
-                    case "4":
+                    case "3":
                         System.out.println(vote.getChoices(me));
                         System.out.print("Select your choice: ");
                         input = getUserInput();
                         try {
-                            if (!vote.vote(me, Integer.parseInt(input))) {
-                                System.out.println("Error, vote not recorded");
-                            }
+                            System.out.println(vote.vote(me, Integer.parseInt(input)));
                         } catch (NumberFormatException e) {
                             System.out.println(e);
                         }
                         input = " ";
                         break;
-                }
+                    case "4":
+                        System.out.println(vote.unVote(me));
+                        break;
 
+                }
+                System.out.println();
             }
         } catch (Exception e) {
             System.out.println(e);
