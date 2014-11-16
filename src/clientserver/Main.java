@@ -6,6 +6,9 @@
 
 package clientserver;
 
+import distributedvote.Client;
+import distributedvote.Server;
+
 /**
  *
  * Shows the operation of the server and multiple clients.
