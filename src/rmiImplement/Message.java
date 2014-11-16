@@ -1,8 +1,13 @@
 package rmiImplement;
 
+import java.io.BufferedReader;
+import java.io.IOException;
+import java.io.InputStreamReader;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -16,17 +21,18 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
     ArrayList<Choice> choices;
 
     @Override
-    public String printMenu(){
-        String temp="";
-        temp+="1 View current voting\n";
-        temp+="2 View current choices\n";
-        temp+="3 Add a new choice\n";
-        
-        temp+="Please make a selection: ";
-        
+    public String printMenu() {
+        String temp = "";
+        temp += "1 View current voting\n";
+        temp += "2 View current choices\n";
+        temp += "3 Add a new choice\n";
+
+        temp += "Please make a selection: ";
+
         return temp;
     }
-    
+
+
     public Message() throws RemoteException {
         message = "test";
         choices = new ArrayList<>();
@@ -81,17 +87,22 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
 
     @Override
     public boolean addChoice(Voter v, Choice choice) throws RemoteException {
-        if(checkKey(v)){
-            for(Choice c:choices){
-                if(c.getName().equals(choice.getName())){
+        if (checkKey(v)) {
+            for (Choice c : choices) {
+                if (c.getName().equals(choice.getName())) {
                     return false;
                 }
             }
             choices.add(choice);
             return true;
-        }else{
+        } else {
             return false;
         }
+    }
+
+    @Override
+    public Choice makeChoice() throws RemoteException {
+        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
     }
 
 }

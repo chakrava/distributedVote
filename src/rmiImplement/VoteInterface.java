@@ -21,4 +21,6 @@ public interface VoteInterface extends Remote {
     public boolean addChoice(Voter v, Choice choice) throws RemoteException;
     
     public String printMenu()throws RemoteException;
+    
+    public Choice makeChoice() throws RemoteException;
 }
