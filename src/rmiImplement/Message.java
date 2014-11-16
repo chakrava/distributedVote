@@ -2,6 +2,7 @@ package rmiImplement;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
+import java.util.ArrayList;
 
 /**
  *
@@ -11,22 +12,86 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
 
     static int count = 1;
     String message;
+    private ArrayList<Voter> voterList;
+    ArrayList<Choice> choices;
 
+    @Override
+    public String printMenu(){
+        String temp="";
+        temp+="1 View current voting\n";
+        temp+="2 View current choices\n";
+        temp+="3 Add a new choice\n";
+        
+        temp+="Please make a selection: ";
+        
+        return temp;
+    }
+    
     public Message() throws RemoteException {
         message = "test";
+        choices = new ArrayList<>();
     }
 
-    @Override
-    synchronized public int login(String pass) throws RemoteException {
-        if (pass.equals("pass")) {
-            return count++;
+    private boolean checkKey(Voter checkVoter) {
+        for (Voter v : voterList) {
+            if (v.id == checkVoter.id) {
+                if (v.key == checkVoter.key) {
+                    return true;
+                }
+            }
         }
-        else return -1;
+        return false;
     }
 
     @Override
-    public String test(String pass) throws RemoteException {
-        return message;
+    synchronized public Voter login(String pass) throws RemoteException {
+        if (pass.equals("pass")) {
+            double key = Math.random();
+            Voter temp = new Voter(count++, key);
+            return temp;
+        } else {
+            return null;
+        }
+    }
+
+    @Override
+    public String test(Voter v) throws RemoteException {
+        if (checkKey(v)) {
+            return message;
+        }
+        return null;
+    }
+
+    @Override
+    public ArrayList<Choice> getChoices(Voter v) throws RemoteException {
+        if (checkKey(v)) {
+            return choices;
+        }
+        return null;
+    }
+
+    @Override
+    synchronized public boolean vote(Voter v, Choice c) throws RemoteException {
+        if (checkKey(v)) {
+            return c.voteFor(v);
+        } else {
+            return false;
+        }
+    }
+
+    @Override
+    public boolean addChoice(Voter v, Choice choice) throws RemoteException {
+        if(checkKey(v)){
+            for(Choice c:choices){
+                if(c.getName().equals(choice.getName())){
+                    return false;
+                }
+            }
+            choices.add(choice);
+            return true;
+        }else{
+            return false;
+        }
     }
 
 }
