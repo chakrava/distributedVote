@@ -1,13 +1,8 @@
 package rmiImplement;
 
-import java.io.BufferedReader;
-import java.io.IOException;
-import java.io.InputStreamReader;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
-import java.util.logging.Level;
-import java.util.logging.Logger;
 
 /**
  *
@@ -23,29 +18,34 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
     @Override
     public String printMenu() {
         String temp = "";
-        temp += "1 View current voting\n";
-        temp += "2 View current choices\n";
-        temp += "3 Add a new choice\n";
+        temp += "1: View current voting\n";
+        temp += "2: View current choices\n";
+        temp += "3: Add a new choice\n";
 
+        temp+="0: Exit";
         temp += "Please make a selection: ";
 
         return temp;
     }
 
-
     public Message() throws RemoteException {
         message = "test";
         choices = new ArrayList<>();
+        voterList = new ArrayList<>();
     }
 
     private boolean checkKey(Voter checkVoter) {
-        for (Voter v : voterList) {
-            if (v.id == checkVoter.id) {
-                if (v.key == checkVoter.key) {
-                    return true;
+        if (voterList.size() > 0) {
+            for (Voter v : voterList) {
+                if (v.id == checkVoter.id) {
+                    if (v.key == checkVoter.key) {
+                        System.out.println("Verified");
+                        return true;
+                    }
                 }
             }
         }
+        System.out.println("Verification error");
         return false;
     }
 
@@ -54,6 +54,7 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
         if (pass.equals("pass")) {
             double key = Math.random();
             Voter temp = new Voter(count++, key);
+            voterList.add(temp);
             return temp;
         } else {
             return null;
@@ -86,14 +87,16 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
     }
 
     @Override
-    public boolean addChoice(Voter v, Choice choice) throws RemoteException {
+    public boolean addChoice(Voter v, String choiceName) throws RemoteException {
         if (checkKey(v)) {
             for (Choice c : choices) {
-                if (c.getName().equals(choice.getName())) {
+                if (c.getName().equals(choiceName)) {
                     return false;
                 }
             }
-            choices.add(choice);
+
+            Choice choice = new Choice(choiceName);
+            choices.add(new Choice(choiceName));
             return true;
         } else {
             return false;

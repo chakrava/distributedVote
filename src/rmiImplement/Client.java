@@ -4,6 +4,7 @@ import java.io.BufferedReader;
 import java.io.IOException;
 import java.io.InputStreamReader;
 import java.rmi.Naming;
+import java.util.ArrayList;
 
 /**
  *
@@ -25,9 +26,36 @@ public class Client {
             System.out.println("ID: " + me.id);
             System.out.println("Pass: " + me.key);
             String input = " ";
+
+            ArrayList<Choice> choices;
+
             while (!input.equals("0")) {
-                System.out.println(vote.printMenu());
+                System.out.print(vote.printMenu());
                 input = getUserInput();
+
+                switch (input) {
+                    case "1":
+                        choices = vote.getChoices(me);
+                        for (Choice c : choices) {
+                            System.out.println(c.getName() + " " + c.getPicked());
+                        }
+                        break;
+                    case "2":
+                        choices = vote.getChoices(me);
+                        for (Choice c : choices) {
+                            System.out.println(c.getName());
+                        }
+                        break;
+                    case "3":
+                        System.out.print("Please enter the choice you wish to add: ");
+                        input = getUserInput();
+                        if (!vote.addChoice(me, input)) {
+                            System.out.println("Error, choice not added");
+                        }
+                        input = " ";
+                        break;
+                }
+
             }
         } catch (Exception e) {
             System.out.println(e);
