@@ -6,7 +6,8 @@ import java.io.Serializable;
  *
  * @author Erik Storla <estorla42@gmail.com>
  */
-public class Voter implements Serializable{
+public class Voter implements Serializable {
+
     public int id;
     public double key;
 
@@ -14,5 +15,10 @@ public class Voter implements Serializable{
         this.id = id;
         this.key = key;
     }
-    
+
+    @Override
+    public String toString() {
+        return ""+id;
+    }
+
 }

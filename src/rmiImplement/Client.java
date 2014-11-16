@@ -35,22 +35,29 @@ public class Client {
 
                 switch (input) {
                     case "1":
-                        choices = vote.getChoices(me);
-                        for (Choice c : choices) {
-                            System.out.println(c.getName() + " " + c.getPicked());
-                        }
+                        System.out.println(vote.getVotes(me));
                         break;
                     case "2":
-                        choices = vote.getChoices(me);
-                        for (Choice c : choices) {
-                            System.out.println(c.getName());
-                        }
+                        System.out.println(vote.getChoices(me));
                         break;
                     case "3":
                         System.out.print("Please enter the choice you wish to add: ");
                         input = getUserInput();
                         if (!vote.addChoice(me, input)) {
                             System.out.println("Error, choice not added");
+                        }
+                        input = " ";
+                        break;
+                    case "4":
+                        System.out.println(vote.getChoices(me));
+                        System.out.print("Select your choice: ");
+                        input = getUserInput();
+                        try {
+                            if (!vote.vote(me, Integer.parseInt(input))) {
+                                System.out.println("Error, vote not recorded");
+                            }
+                        } catch (NumberFormatException e) {
+                            System.out.println(e);
                         }
                         input = " ";
                         break;

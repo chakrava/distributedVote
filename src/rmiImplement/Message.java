@@ -11,7 +11,7 @@ import java.util.ArrayList;
 public class Message extends UnicastRemoteObject implements VoteInterface {
 
     static int count = 1;
-    String message;
+//    String message;
     private ArrayList<Voter> voterList;
     ArrayList<Choice> choices;
 
@@ -21,15 +21,16 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
         temp += "1: View current voting\n";
         temp += "2: View current choices\n";
         temp += "3: Add a new choice\n";
+        temp += "4: Select a choice\n";
 
-        temp+="0: Exit";
+        temp += "0: Exit\n";
         temp += "Please make a selection: ";
 
         return temp;
     }
 
     public Message() throws RemoteException {
-        message = "test";
+//        message = "test";
         choices = new ArrayList<>();
         voterList = new ArrayList<>();
     }
@@ -41,6 +42,8 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
                     if (v.key == checkVoter.key) {
                         System.out.println("Verified");
                         return true;
+                    } else {
+                        break;
                     }
                 }
             }
@@ -63,18 +66,57 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
 
     @Override
     public String test(Voter v) throws RemoteException {
-        if (checkKey(v)) {
-            return message;
-        }
+//        if (checkKey(v)) {
+//            return message;
+//        }
         return null;
     }
 
     @Override
-    public ArrayList<Choice> getChoices(Voter v) throws RemoteException {
+    synchronized public boolean vote(Voter v, int i) {
         if (checkKey(v)) {
-            return choices;
+            for (Choice c : choices) {
+                System.out.println("Choice "+c.getName()+" containing "+c.votedBy);
+                c.votedBy.remove(v);
+            }
+
+            if (choices.size() > i) {
+                choices.get(i).voteFor(v);
+                return true;
+            }
         }
-        return null;
+        return false;
+    }
+
+    @Override
+    //public ArrayList<Choice> getChoices(Voter v) throws RemoteException {
+    public String getChoices(Voter v) throws RemoteException {
+        String temp = "";
+        if (checkKey(v)) {
+            if (choices.isEmpty()) {
+                return "No choices";
+            }
+            //for (Choice c : choices) {
+            for (int i = 0; i < choices.size(); i++) {
+                temp += i + " " + choices.get(i).getName() + "\n";
+            }
+        }
+        return temp;
+    }
+
+    @Override
+    //public ArrayList<Choice> getChoices(Voter v) throws RemoteException {
+    public String getVotes(Voter v) throws RemoteException {
+        String temp = "";
+        if (checkKey(v)) {
+            if (choices.isEmpty()) {
+                return "No choices";
+            }
+            for (Choice c : choices) {
+                temp += c.getName() + " " + c.getPicked() + "\n";
+            }
+        }
+        return temp;
     }
 
     @Override
@@ -95,17 +137,11 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
                 }
             }
 
-            Choice choice = new Choice(choiceName);
+            //Choice choice = new Choice(choiceName);
             choices.add(new Choice(choiceName));
             return true;
         } else {
             return false;
         }
     }
-
-    @Override
-    public Choice makeChoice() throws RemoteException {
-        throw new UnsupportedOperationException("Not supported yet."); //To change body of generated methods, choose Tools | Templates.
-    }
-
 }
