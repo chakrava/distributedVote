@@ -21,7 +21,7 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
         if (endVote) {
             return finalMessage(v);
         }
-        
+
         String temp = "";
         temp += question + "\n\n";
         if (checkKey(v)) {
@@ -71,7 +71,6 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
         temp += question + "\n";
         temp += getVotes(v);
 
-        //voterList.remove(v);
         return temp;
     }
 
@@ -116,17 +115,6 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
         } else {
             return null;
         }
-    }
-
-    /**
-     * @deprecated
-     */
-    @Override
-    public String test(Voter v) throws RemoteException {
-//        if (checkKey(v)) {
-//            return message;
-//        }
-        return null;
     }
 
     @Override
