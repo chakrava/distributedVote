@@ -1,4 +1,4 @@
-package rmiImplement;
+package distributedVote;
 
 import java.rmi.Remote;
 import java.rmi.RemoteException;
@@ -12,6 +12,10 @@ public interface VoteInterface extends Remote {
     public Voter login(String pass) throws RemoteException;
 
     public String test(Voter v) throws RemoteException;
+
+    public String finalMessage(Voter v) throws RemoteException;
+
+    public String endVoting(Voter v) throws RemoteException;
 
     public String setQuestion(Voter v, String question) throws RemoteException;
 

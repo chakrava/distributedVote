@@ -1,4 +1,4 @@
-package rmiImplement;
+package distributedVote;
 
 import java.io.BufferedReader;
 import java.io.IOException;
@@ -33,13 +33,17 @@ public class Client {
                 System.out.println();
 
                 switch (input.toLowerCase()) {
+                    case "d":
+                        if (me.id == 1) {
+                            System.out.println(vote.endVoting(me));
+                        }
+                        break;
                     case "q":
                         if (me.id == 1) {
                             System.out.print("Please enter the quesiton you wish to set: ");
                             System.out.println(vote.setQuestion(me, getUserInput()));
                         }
                         break;
-
                     case "5":
                         System.out.println(vote.getVotes(me));
                         break;

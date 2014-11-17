@@ -1,4 +1,4 @@
-package rmiImplement;
+package distributedVote;
 
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
@@ -14,9 +14,14 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
     static String question = "";
     private static ArrayList<Voter> voterList;
     private static ArrayList<Choice> choices;
+    private static boolean endVote = false;
 
     @Override
-    public String printMenu(Voter v) {
+    public String printMenu(Voter v) throws RemoteException {
+        if (endVote) {
+            return finalMessage(v);
+        }
+        
         String temp = "";
         temp += question + "\n\n";
         if (checkKey(v)) {
@@ -28,6 +33,9 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
                 temp += "3: Select a choice\n";
                 temp += "4: Rescind your vote\n";
                 temp += "5: View current voting results\n";
+            }
+            if (v.id == 1) {
+                temp += "D: End voting\n";
             }
 
             temp += "0: Exit\n";
@@ -42,12 +50,38 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
     }
 
     @Override
+    public String endVoting(Voter v) {
+        if (!checkKey(v)) {
+            return "Invalid credentials!";
+        } else if (v.id != 1) {
+            return "You cannot end the voting!";
+        } else {
+            endVote = true;
+            return "Ending voting...";
+        }
+    }
+
+    @Override
+    public String finalMessage(Voter v) throws RemoteException {
+        if (!checkKey(v)) {
+            return "Invalid credentials!";
+        }
+        String temp = "";
+        temp += "Voting has ended!\n\n";
+        temp += question + "\n";
+        temp += getVotes(v);
+
+        //voterList.remove(v);
+        return temp;
+    }
+
+    @Override
     public String setQuestion(Voter v, String question) {
         if (!checkKey(v)) {
             return "Invalid credentials!";
         } else if (v.id != 1) {
             return "You cannot set the question!";
-        } else if (question.length()!=0) {
+        } else if (Message.question.length() != 0) {
             return "The question has already been set!";
         } else {
             Message.question = question;

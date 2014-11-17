@@ -1,4 +1,4 @@
-package rmiImplement;
+package distributedVote;
 
 import java.io.Serializable;
 
