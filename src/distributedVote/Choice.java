@@ -12,12 +12,10 @@ public class Choice implements Serializable {
 
     private String name;
     public ArrayList<Voter> votedBy;
-    //public ArrayList<Integer> votedByInt;
 
     public Choice(String name) {
         this.name = name;
         votedBy = new ArrayList<>();
-        //votedByInt = new ArrayList<>();
     }
 
     public String getName() {

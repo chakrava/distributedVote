@@ -18,7 +18,7 @@ public class Voter implements Serializable {
 
     @Override
     public String toString() {
-        return ""+id;
+        return "" + id;
     }
 
     @Override

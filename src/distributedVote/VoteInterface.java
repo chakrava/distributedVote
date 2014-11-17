@@ -11,20 +11,16 @@ public interface VoteInterface extends Remote {
 
     public Voter login(String pass) throws RemoteException;
 
-    public String test(Voter v) throws RemoteException;
-
     public String finalMessage(Voter v) throws RemoteException;
 
     public String endVoting(Voter v) throws RemoteException;
 
     public String setQuestion(Voter v, String question) throws RemoteException;
 
-    //public ArrayList<Choice> getChoices(Voter v) throws RemoteException;
     public String getChoices(Voter v) throws RemoteException;
 
     public String getVotes(Voter v) throws RemoteException;
 
-    //public String vote(Voter v, Choice choice) throws RemoteException;
     public String addChoice(Voter v, String choice) throws RemoteException;
 
     public String printMenu(Voter v) throws RemoteException;
