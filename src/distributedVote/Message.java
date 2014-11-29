@@ -3,18 +3,22 @@ package distributedVote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.Iterator;
 
 /**
  *
  * @author Erik Storla <estorla42@gmail.com>
  */
-public class Message extends UnicastRemoteObject implements VoteInterface {
+public class Message extends UnicastRemoteObject implements VoterInterface {
 
     static int count = 1;
     static String question = "";
-    private static ArrayList<Voter> voterList;
-    private static ArrayList<Choice> choices;
+    //static Server server;
+    public static ArrayList<Voter> voterList;
+    public static ArrayList<Choice> choices;
     private static boolean endVote = false;
+
+    
 
     @Override
     public String printMenu(Voter v) throws RemoteException {
@@ -44,9 +48,16 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
         return temp;
     }
 
-    public Message() throws RemoteException {
+    public Message(Server server) throws RemoteException {
         choices = new ArrayList<>();
         voterList = new ArrayList<>();
+
+//        System.out.print("Starting votepusher...");
+//        new Thread(new VotePusher()).start();
+//        System.out.println("started");
+        //Message.server = server;
+        //voterList = server.voters;
+        //choices = server.choices;
     }
 
     @Override
@@ -106,10 +117,10 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
     }
 
     @Override
-    synchronized public Voter login(String pass) throws RemoteException {
+    synchronized public Voter login(String pass, Client client) throws RemoteException {
         if (pass.equals("pass")) {
             double key = Math.random();
-            Voter temp = new Voter(count++, key);
+            Voter temp = new Voter(count++, key, client);
             voterList.add(temp);
             return temp;
         } else {
@@ -153,6 +164,7 @@ public class Message extends UnicastRemoteObject implements VoteInterface {
                 temp += i + " " + choices.get(i).getName() + "\n";
             }
         }
+
         return temp;
     }
 

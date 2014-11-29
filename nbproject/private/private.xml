@@ -3,12 +3,13 @@
     <editor-bookmarks xmlns="http://www.netbeans.org/ns/editor-bookmarks/2" lastBookmarkId="0"/>
     <open-files xmlns="http://www.netbeans.org/ns/projectui-open-files/2">
         <group>
+            <file>file:/C:/Users/Chaos/Documents/_Workspace/distributedVote/src/distributedVote/VoterInterface.java</file>
             <file>file:/C:/Users/Chaos/Documents/_Workspace/distributedVote/src/distributedVote/Message.java</file>
             <file>file:/C:/Users/Chaos/Documents/_Workspace/distributedVote/src/distributedVote/Voter.java</file>
             <file>file:/C:/Users/Chaos/Documents/_Workspace/distributedVote/src/distributedVote/Server.java</file>
+            <file>file:/C:/Users/Chaos/Documents/_Workspace/distributedVote/src/distributedVote/InterfacePushVotesToClient.java</file>
             <file>file:/C:/Users/Chaos/Documents/_Workspace/distributedVote/src/distributedVote/Choice.java</file>
             <file>file:/C:/Users/Chaos/Documents/_Workspace/distributedVote/src/distributedVote/Client.java</file>
-            <file>file:/C:/Users/Chaos/Documents/_Workspace/distributedVote/src/distributedVote/VoteInterface.java</file>
         </group>
     </open-files>
 </project-private>

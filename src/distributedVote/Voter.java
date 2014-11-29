@@ -8,12 +8,14 @@ import java.io.Serializable;
  */
 public class Voter implements Serializable {
 
+    public Client client;
     public int id;
     public double key;
 
-    public Voter(int id, double key) {
+    public Voter(int id, double key, Client c) {
         this.id = id;
         this.key = key;
+        this.client = c;
     }
 
     @Override
