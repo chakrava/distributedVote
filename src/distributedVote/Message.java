@@ -18,8 +18,6 @@ public class Message extends UnicastRemoteObject implements VoterInterface {
     public static ArrayList<Choice> choices;
     private static boolean endVote = false;
 
-    
-
     @Override
     public String printMenu(Voter v) throws RemoteException {
         if (endVote) {
@@ -199,4 +197,22 @@ public class Message extends UnicastRemoteObject implements VoterInterface {
             return "Choice not added";
         }
     }
+
+//    public static class VotePusher implements Runnable {
+//
+//        @Override
+//        public synchronized void run() {
+//            while (true) {
+//                Iterator it = voterList.iterator();
+//                while (it.hasNext()) {
+//                    try {
+//                        ((Voter) it.next()).client.pushVotes(choices);
+//                        System.out.println("pushed votes");
+//                    } catch (RemoteException e) {
+//
+//                    }
+//                }
+//            }
+//        }
+//    }
 }

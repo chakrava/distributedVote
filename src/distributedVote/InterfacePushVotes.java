@@ -8,7 +8,7 @@ import java.util.ArrayList;
  *
  * @author Erik Storla <estorla42@gmail.com>
  */
-public interface InterfacePushVotesToClient extends Remote {
+public interface InterfacePushVotes extends Remote {
 
     public void pushVotes(ArrayList<Choice> votesInc) throws RemoteException;
 }

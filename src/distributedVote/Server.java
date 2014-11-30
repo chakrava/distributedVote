@@ -32,30 +32,13 @@ public class Server {
             Registry registry = LocateRegistry.getRegistry("localhost", 60000);
             message = new Message(this);
             registry.bind("vote", message);
-            System.out.print("Starting votepusher...");
-            new Thread(new VotePusher()).start();
-            System.out.println("started");
+
+//            System.out.print("Starting votepusher...");
+//            new Thread(new VotePusher()).start();
+//            new Thread(new Message.VotePusher()).start();
+//            System.out.println("started");
         } catch (Exception e) {
             System.out.println(e);
         }
     }
-
-    public class VotePusher implements Runnable {
-
-        @Override
-        public synchronized void run() {
-            while (true) {
-                Iterator it = message.voterList.iterator();
-                while (it.hasNext()) {
-                    try {
-                        ((Voter) it.next()).client.pushVotes(message.choices);
-                        System.out.println("pushed votes");
-                    } catch (RemoteException e) {
-
-                    }
-                }
-            }
-        }
-    }
-
 }

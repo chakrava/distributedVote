@@ -12,18 +12,18 @@ import java.util.ArrayList;
  *
  * @author Erik Storla <estorla42@gmail.com>
  */
-public class Client implements InterfacePushVotesToClient, Serializable {
+public class Client implements InterfacePushVotes, Serializable {
 
     /**
      * @param args the command line arguments
      */
-    ArrayList<Choice> votes = new ArrayList<>();
-
+//    ArrayList<Choice> votes;// = new ArrayList<>();
     public static void main(String[] args) {
         Client client = new Client();
     }
 
     public Client() {
+//        votes = new ArrayList<>();
         try {
             VoterInterface vote = (VoterInterface) Naming.lookup("//localhost:60000/vote");
             Voter me = vote.login("pass", this);
@@ -37,10 +37,10 @@ public class Client implements InterfacePushVotesToClient, Serializable {
 
             while (!input.equals("0")) {
                 System.out.print(vote.printMenu(me));
-                System.out.println(votes.size());
-                for(Choice v : votes){
-                    System.out.println(v);
-                }
+//                System.out.println(votes.size());
+//                for (Choice v : votes) {
+//                    System.out.println(v);
+//                }
                 input = getUserInput();
                 System.out.println();
 
@@ -48,6 +48,7 @@ public class Client implements InterfacePushVotesToClient, Serializable {
                     case "d":
                         if (me.id == 1) {
                             System.out.println(vote.endVoting(me));
+                            input = "0";
                         }
                         break;
                     case "q":
@@ -69,10 +70,10 @@ public class Client implements InterfacePushVotesToClient, Serializable {
                         input = " ";
                         break;
                     case "3":
-                        //System.out.println(vote.getChoices(me));
-                        for (Choice c : votes) {
-                            System.out.println(c.getName() + " " + c.getPicked());
-                        }
+                        System.out.println(vote.getChoices(me));
+//                        for (Choice c : votes) {
+//                            System.out.println(c.getName() + " " + c.getPicked());
+//                        }
                         System.out.print("Select your choice: ");
                         input = getUserInput();
                         try {
@@ -106,12 +107,17 @@ public class Client implements InterfacePushVotesToClient, Serializable {
 
     }
 
+    /**
+     * @deprecated @param votesInc
+     * @throws RemoteException
+     */
     @Override
     public synchronized void pushVotes(ArrayList<Choice> votesInc) throws RemoteException {
-        System.out.println("Recieved new votes! "+votesInc.size());
-        votes.clear();
-        for(Choice c : votesInc){
-            votes.add(c);
+//        votes = votesInc;
+//        System.out.println("Recieved new votes! " + votesInc.size());
+        for (Choice c : votesInc) {
+            System.out.println(c.getName());
+//            votes.add(c);
         }
     }
 }
