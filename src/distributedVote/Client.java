@@ -17,13 +17,11 @@ public class Client implements InterfacePushVotes, Serializable {
     /**
      * @param args the command line arguments
      */
-//    ArrayList<Choice> votes;// = new ArrayList<>();
     public static void main(String[] args) {
         Client client = new Client();
     }
 
     public Client() {
-//        votes = new ArrayList<>();
         try {
             VoterInterface vote = (VoterInterface) Naming.lookup("//localhost:60000/vote");
             Voter me = vote.login("pass", this);
@@ -37,10 +35,6 @@ public class Client implements InterfacePushVotes, Serializable {
 
             while (!input.equals("0")) {
                 System.out.print(vote.printMenu(me));
-//                System.out.println(votes.size());
-//                for (Choice v : votes) {
-//                    System.out.println(v);
-//                }
                 input = getUserInput();
                 System.out.println();
 
@@ -71,9 +65,6 @@ public class Client implements InterfacePushVotes, Serializable {
                         break;
                     case "3":
                         System.out.println(vote.getChoices(me));
-//                        for (Choice c : votes) {
-//                            System.out.println(c.getName() + " " + c.getPicked());
-//                        }
                         System.out.print("Select your choice: ");
                         input = getUserInput();
                         try {

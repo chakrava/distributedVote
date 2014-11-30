@@ -7,6 +7,7 @@ import java.util.ArrayList;
 /**
  *
  * @author Erik Storla <estorla42@gmail.com>
+ * @deprecated
  */
 public interface InterfacePushVotes extends Remote {
 
