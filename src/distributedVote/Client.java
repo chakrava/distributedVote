@@ -12,15 +12,17 @@ import java.util.ArrayList;
  *
  * @author Erik Storla <estorla42@gmail.com>
  */
-public class Client implements InterfacePushVotes, Serializable {
+public class Client implements Serializable {
 
     /**
      * @param args the command line arguments
      */
+    boolean ended = false;
+    
     public static void main(String[] args) {
         Client client = new Client();
     }
-
+    
     public Client() {
         try {
             VoterInterface vote = (VoterInterface) Naming.lookup("//localhost:60000/vote");
@@ -32,12 +34,13 @@ public class Client implements InterfacePushVotes, Serializable {
             System.out.println("ID: " + me.id);
             System.out.println("Key: " + me.key);
             String input = " ";
-
-            while (!input.equals("0")) {
+            
+            while (!input.equals("0") && !ended) {
                 System.out.print(vote.printMenu(me));
+//                System.out.print(ended);
                 input = getUserInput();
                 System.out.println();
-
+                
                 switch (input.toLowerCase()) {
                     case "d":
                         if (me.id == 1) {
@@ -77,7 +80,7 @@ public class Client implements InterfacePushVotes, Serializable {
                     case "4":
                         System.out.println(vote.unVote(me));
                         break;
-
+                    
                 }
                 System.out.println();
             }
@@ -85,30 +88,17 @@ public class Client implements InterfacePushVotes, Serializable {
             System.out.println(e);
         }
     }
-
+    
     public static String getUserInput() {
         String temp = "";
         try {
             BufferedReader br = new BufferedReader(new InputStreamReader(System.in));
             temp = br.readLine();
         } catch (IOException ex) {
-
+            
         }
         return temp;
-
+        
     }
-
-    /**
-     * @deprecated @param votesInc
-     * @throws RemoteException
-     */
-    @Override
-    public synchronized void pushVotes(ArrayList<Choice> votesInc) throws RemoteException {
-//        votes = votesInc;
-//        System.out.println("Recieved new votes! " + votesInc.size());
-        for (Choice c : votesInc) {
-            System.out.println(c.getName());
-//            votes.add(c);
-        }
-    }
+    
 }

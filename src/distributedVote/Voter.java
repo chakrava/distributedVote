@@ -1,12 +1,14 @@
 package distributedVote;
 
 import java.io.Serializable;
+import java.rmi.RemoteException;
+import java.util.ArrayList;
 
 /**
  *
  * @author Erik Storla <estorla42@gmail.com>
  */
-public class Voter implements Serializable {
+public class Voter implements InterfacePushVotes, Serializable {
 
     public Client client;
     public int id;
@@ -45,4 +47,22 @@ public class Voter implements Serializable {
         return true;
     }
 
+    /**
+     * @deprecated @param votesInc
+     * @throws RemoteException
+     */
+    @Override
+    public synchronized void pushVotes(ArrayList<Choice> votesInc) throws RemoteException {
+//        votes = votesInc;
+//        System.out.println("Recieved new votes! " + votesInc.size());
+        for (Choice c : votesInc) {
+            System.out.println(c.getName());
+//            votes.add(c);
+        }
+    }
+
+    @Override
+    public void endVoting() throws RemoteException {
+        client.ended = true;
+    }
 }

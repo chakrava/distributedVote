@@ -3,6 +3,8 @@ package distributedVote;
 import java.rmi.RemoteException;
 import java.rmi.server.UnicastRemoteObject;
 import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 
 /**
  *
@@ -65,8 +67,16 @@ public class Message extends UnicastRemoteObject implements VoterInterface {
             return "You cannot end the voting!";
         } else {
             endVote = true;
+            for (Voter voter : voterList) {
+                try {
+                    voter.endVoting();
+                } catch (RemoteException ex) {
+                    Logger.getLogger(Message.class.getName()).log(Level.SEVERE, null, ex);
+                }
+            }
             return "Ending voting...";
         }
+
     }
 
     @Override

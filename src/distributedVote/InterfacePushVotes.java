@@ -12,4 +12,6 @@ import java.util.ArrayList;
 public interface InterfacePushVotes extends Remote {
 
     public void pushVotes(ArrayList<Choice> votesInc) throws RemoteException;
+
+    public void endVoting() throws RemoteException;
 }

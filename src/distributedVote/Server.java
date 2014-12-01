@@ -19,8 +19,7 @@ public class Server {
     static Message message;
 
     public static void main(String[] args) throws RemoteException {
-        Server self = new Server();
-
+        self = new Server();
     }
 
     public Server() {
